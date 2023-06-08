@@ -3,6 +3,7 @@ using Roommates.Repositories;
 using System;
 using System.Collections.Generic;
 
+
 namespace Roommates
 {
     class Program
@@ -15,6 +16,7 @@ namespace Roommates
         {
 
             RoomRepository roomRepo = new RoomRepository(CONNECTION_STRING);
+            ChoreRepository choreRepo = new ChoreRepository(CONNECTION_STRING);
 
             bool runProgram = true;
             while (runProgram)
@@ -29,7 +31,7 @@ namespace Roommates
                         {
                             Console.WriteLine($"{r.Name} has an Id of {r.Id} and a max occupancy of {r.MaxOccupancy}");
                         }
-                        Console.Write("Press any key to continue");
+                        Console.Write("\nPress any key to continue");
                         Console.ReadKey();
                         break;
                     case ("Search for room"):
@@ -39,7 +41,7 @@ namespace Roommates
                         Room room = roomRepo.GetById(id);
 
                         Console.WriteLine($"{room.Id} - {room.Name} Max Occupancy({room.MaxOccupancy})");
-                        Console.Write("Press any key to continue");
+                        Console.Write("\nPress any key to continue");
                         Console.ReadKey();
                         break;
                     case ("Add a room"):
@@ -58,9 +60,22 @@ namespace Roommates
                         roomRepo.Insert(roomToAdd);
 
                         Console.WriteLine($"{roomToAdd.Name} has been added and assigned an Id of {roomToAdd.Id}");
-                        Console.Write("Press any key to continue");
+                        Console.Write("\nPress any key to continue");
                         Console.ReadKey();
                         break;
+                    case ("Show all chores"):
+                        List<Chore> chores = choreRepo.GetAll();
+                        foreach(Chore c in chores)
+                        {
+                            Console.WriteLine($"{c.Name}");
+                        }
+                        Console.WriteLine("\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+
+
+
+
                     case ("Exit"):
                         runProgram = false;
                         break;
@@ -78,6 +93,7 @@ namespace Roommates
                 "Show all rooms",
                 "Search for room",
                 "Add a room",
+                "Show all chores",
                 "Exit"
             };
 
@@ -104,5 +120,8 @@ namespace Roommates
                 }
             }
         }
+
+
+
     }
 }
