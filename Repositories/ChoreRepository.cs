@@ -79,5 +79,68 @@ namespace Roommates.Repositories
                 }
             }
         }
-    } 
+
+
+        /// <summary>
+        ///  Returns a single chore with the given id.
+        /// </summary>
+        public Chore GetById(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Name FROM Chore WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Chore chore = null;
+
+                        // If we only expect a single row back from the database, we don't need a while loop.
+                        if (reader.Read())
+                        {
+                            chore = new Chore
+                            {
+                                Id = id,
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                            };
+                        }
+                        return chore;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        ///  Add a new chore to the database
+        ///   NOTE: This method sends data to the database,
+        ///   it does not get anything from the database, so there is nothing to return.
+        /// </summary>
+        public void Insert(Chore chore)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Chore (Name)
+                                        OUTPUT INSERTED.Id
+                                        VALUES (@name)";
+                    cmd.Parameters.AddWithValue("@name", chore.Name);
+                    int id = (int)cmd.ExecuteScalar();
+
+                    chore.Id = id;
+                }
+            }
+
+            // when this method is finished we can look in the database and see the new chore.
+
+
+        }
+
+
+    }
 }
