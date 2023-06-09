@@ -142,5 +142,49 @@ namespace Roommates.Repositories
         }
 
 
+        // Add a method to ChoreRepository called GetUnassignedChores. It should not accept any parameters and should return a list of chores that don't have any roommates already assigned to them. After implementing this method, add an option to the menu so the user can see the list of unassigned chores.
+
+        public List<Chore> GetUnassignedChores()
+        {
+            using (SqlConnection conn = Connection) 
+            { 
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Chore c LEFT JOIN RoommateChore rc ON c.Id = rc.ChoreID WHERE rc.ChoreId IS NULL";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        List<Chore> chores = new List<Chore>();
+                        while (reader.Read())
+                        {
+                            int idColumnPosition = reader.GetOrdinal("Id");
+                            
+                            int idValue = reader.GetInt32(idColumnPosition);
+
+                            int nameColumnPosition = reader.GetOrdinal("Name");
+                            string nameValue = reader.GetString(nameColumnPosition);
+
+                            Chore chore = new Chore
+                            {
+                                Id = idValue,
+                                Name = nameValue,
+                            };
+
+                            chores.Add(chore);
+
+                        }
+                        return chores;
+                    }
+                }
+            }
+        }
+
+
+        
+
+
+
+
     }
 }

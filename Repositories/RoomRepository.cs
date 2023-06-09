@@ -57,14 +57,14 @@ namespace Roommates.Repositories
                             string nameValue = reader.GetString(nameColumnPosition);
 
                             int maxOccupancyColumPosition = reader.GetOrdinal("MaxOccupancy");
-                            int maxOccupancy = reader.GetInt32(maxOccupancyColumPosition);
+                            int maxOccupancyValue = reader.GetInt32(maxOccupancyColumPosition);
 
                             // Now let's create a new room object using the data from the database.
                             Room room = new Room
                             {
                                 Id = idValue,
                                 Name = nameValue,
-                                MaxOccupancy = maxOccupancy,
+                                MaxOccupancy = maxOccupancyValue,
                             };
 
                             // ...and add that room object to our list.
