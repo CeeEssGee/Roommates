@@ -34,15 +34,20 @@ namespace Roommates.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
 
-                    cmd.CommandText = "SELECT * FROM Roommate rm JOIN Room r ON rm.RoomId = r.Id;";
+                    cmd.CommandText = "SELECT * " +
+                        "FROM Roommate rm " +
+                        "JOIN Room r ON rm.RoomId = r.Id;";
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         List<Roommate> roommates = new List<Roommate>();
+                        //Roommate roommate = null;
+
                         while (reader.Read())
                         {
                             int idColumnPosition = reader.GetOrdinal("Id");
                             int idValue = reader.GetInt32(idColumnPosition);
+                            // Id = reader.GetInt32(reader.GetOrdinal("Id));
 
                             int firstNameColumnPosition = reader.GetOrdinal("FirstName");
                             string firstNameValue = reader.GetString(firstNameColumnPosition);
@@ -100,7 +105,10 @@ namespace Roommates.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT * FROM Roommate rm JOIN Room r ON rm.RoomId = r.Id WHERE rm.Id = @id";
+                    cmd.CommandText = "SELECT * " +
+                        "FROM Roommate rm " +
+                        "JOIN Room r ON rm.RoomId = r.Id " +
+                        "WHERE rm.Id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
 
                     using (SqlDataReader reader = cmd.ExecuteReader()) 

@@ -6,6 +6,8 @@ namespace Roommates.Repositories
     ///  A base class for every other Repository class to inherit from.
     ///  This class is responsible for providing a database connection to each of the repository subclasses
     /// </summary>
+    /// all repositories are inherting from base repository
+    /// purpose is to provide that connection String from base class
     public class BaseRepository
     {
         /// <summary>
@@ -29,6 +31,7 @@ namespace Roommates.Repositories
         ///   This is a "tunnel" to connect the application to the database.
         ///   All communication between the application and database passes through this connection.
         /// </summary>
+        /// this is a computed property and it gets passed into anything that inherits from base repository
         protected SqlConnection Connection => new SqlConnection(_connectionString);
     }
 }
